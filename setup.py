@@ -8,7 +8,7 @@ setup(
     version=phoopy.kernel.__version__,
     packages=['phoopy', 'phoopy.kernel'],
     setup_requires=['wheel'],
-    install_requires=['phoopy-yaml>=1.1.0,<1.2.0'],
+    install_requires=['phoopy-yaml>=1.1.2,<1.2.0'],
     description="Kernel of phoopy framework",
     long_description=long_description,
     url='https://github.com/phoopy/phoopy-kernel',
