@@ -35,6 +35,19 @@ class Container(object):
     def get(self, key):
         return self.__getitem__(key)
 
+    def add_tagged_entry(self, service_entry, tag_name):
+        tag_key = '{}.tag'.format(tag_name)
+        if tag_key not in self:
+            self[tag_key] = lambda c: []
+        self[tag_key].append(service_entry)
+
+    def get_tagged_entries(self, tag_name):
+        tag_key = '{}.tag'.format(tag_name)
+        if tag_key not in self.__factories:
+            return []
+        entries = self[tag_key]
+        return [self[entry['key']] for entry in entries]
+
     def __assert_dependency_exists(self, key):
         if key not in self.__factories:
             raise ContainerException('Dependency {} is not declared'.format(key))

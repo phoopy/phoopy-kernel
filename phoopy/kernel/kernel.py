@@ -30,6 +30,7 @@ class Kernel(object):
         parser = YamlParser()
 
         services_buff = {}
+
         services_buff['services'] = self.__services
 
         for bundle_name in self.__bundles:
@@ -49,6 +50,8 @@ class Kernel(object):
 
     def __init_container(self):
         self.__container = Container()
+        self.__container['kernel'] = lambda c: self
+        self.__container['container'] = lambda c: self.__container
 
         for service_name in self.__services:
             service_entry = self.__services[service_name]
@@ -84,11 +87,9 @@ class Kernel(object):
             return object_instance
 
         tags = service_entry.get('tag', [])
+
         for tag_name in tags:
-            tag_key = '{}.tag'.format(tag_name)
-            if tag_key not in self.__container:
-                self.__container[tag_key] = lambda c: []
-            self.__container[tag_key].append(service_entry)
+            self.__container.add_tagged_entry(service_entry, tag_name)
 
         self.__container[service_entry['key']] = _build_service
 
@@ -176,6 +177,9 @@ class Kernel(object):
 
         for bundle in self.register_bundles():
             name = bundle.get_name()
+            bundle.set_kernel(self)
+            bundle.set_container(self.__container)
+
             if name in self.__bundles.keys():
                 raise Exception('Trying to register two bundles with the same name "{}"'.format(name))
 

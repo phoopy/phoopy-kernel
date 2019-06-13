@@ -4,6 +4,8 @@ import sys
 
 class Bundle(object):
     def __init__(self):
+        self.kernel = None
+        self.container = None
         pass
 
     def get_name(self):
@@ -15,3 +17,15 @@ class Bundle(object):
     def service_path(self):
         # return an yaml file path
         pass
+
+    def set_kernel(self, _kernel):
+        self.kernel = _kernel
+
+    def get_kernel(self, _kernel):
+        return self.kernel
+
+    def set_container(self, _container):
+        self.container = _container
+
+    def get_container(self, _container):
+        return self.container
