@@ -1,5 +1,5 @@
 phoopy-kernel
-======
+=========================================
 
 |Build Status| |Version| |Pyversions|
 
