@@ -27,5 +27,8 @@ class Bundle(object):
     def set_container(self, _container):
         self.container = _container
 
-    def get_container(self, _container):
+    def get_container(self):
         return self.container
+
+    def setup(self):
+        pass

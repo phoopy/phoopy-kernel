@@ -45,6 +45,7 @@ class Kernel(object):
         self.__services = services_buff['services']
 
         self.__init_container()
+        self.__setup_bundles()
 
         self.__booted = True
 
@@ -178,12 +179,17 @@ class Kernel(object):
         for bundle in self.register_bundles():
             name = bundle.get_name()
             bundle.set_kernel(self)
-            bundle.set_container(self.__container)
 
             if name in self.__bundles.keys():
                 raise Exception('Trying to register two bundles with the same name "{}"'.format(name))
 
             self.__bundles[name] = bundle
+
+    def __setup_bundles(self):
+        for key in self.__bundles:
+            bundle = self.__bundles[key]
+            bundle.set_container(self.__container)
+            bundle.setup()
 
     def get_root_dir(self):
         return path.realpath(path.join(self.get_app_dir(), '..'))
