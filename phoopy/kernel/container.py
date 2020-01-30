@@ -6,7 +6,7 @@ class ContainerException(Exception):
 
 
 class Container(object):
-    def __init__(self, values=None):
+    def __init__(self):
         self.__factories = {}
         self.__cache = {}
 
