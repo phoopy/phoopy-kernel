@@ -5,6 +5,8 @@ phoopy-kernel
 
 Kernel of phoopy framework
 
+`Documentation <https://github.com/phoopy/phoopy-kernel/blob/master/DOCUMENTATION.md>`_
+
 
 .. |Build Status| image:: https://travis-ci.org/phoopy/phoopy-kernel.svg
    :target: https://travis-ci.org/phoopy/phoopy-kernel
