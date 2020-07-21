@@ -15,6 +15,7 @@ class Kernel(object):
         self.__config = {}
         self.__parameters = {}
         self.__container = None
+        self.__services = {}
 
     def get_environment(self):
         return self.__environment
@@ -23,27 +24,8 @@ class Kernel(object):
         if self.__booted:
             return
 
-        self.__initialize_configuration()
-
         self.__initialize_bundles()
-
-        parser = YamlParser()
-
-        services_buff = {}
-
-        services_buff['services'] = self.__services
-
-        for bundle_name in self.__bundles:
-            bundle_services_path = self.__bundles[bundle_name].service_path()
-
-            if bundle_services_path is not None:
-                services_buff = parser.parse(
-                    file_path=bundle_services_path,
-                    result=services_buff
-                )
-
-        self.__services = services_buff['services']
-
+        self.__initialize_configuration()
         self.__init_container()
         self.__setup_bundles()
 
@@ -163,7 +145,22 @@ class Kernel(object):
         config_path = path.join(self.get_app_dir(), 'config', 'config_{}.yml'.format(self.get_environment()))
 
         parser = YamlParser()
-        self.__config = parser.parse(config_path)
+
+        # Initialize bundle services
+
+        config = {}
+
+        for bundle_name in self.__bundles:
+            bundle_services_path = self.__bundles[bundle_name].service_path()
+            if bundle_services_path is not None:
+                config = parser.parse(
+                    file_path=bundle_services_path,
+                    result=config
+                )
+
+        # Initialize global config
+
+        self.__config = parser.parse(config_path, result=config)
         self.__services = self.__config['services']
         self.__parameters['kernel'] = {
             'root_path': self.get_root_dir(),
